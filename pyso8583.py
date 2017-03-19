@@ -31,11 +31,15 @@ def parse_bitmaps(str_bitmap):
         end = end + 16
     # verifies if which bitmap has `1` on first bit
     for count in range( 0, len(list_bitmaps) ):
-        if ( ( 1 << 64 - 1) &  list_bitmaps[count] == 0 ):
+        is_set = ( 1 << 64 - 1) &  list_bitmaps[count]
+        # if the first bit is 0, got error 
+        if ( is_set == 0 ):
             print("[ERROR] Error in set bitmap ", count, " isn't '1'", bin(list_bitmaps[count]),( 1 << 64 - 1) &  list_bitmaps[count] != 0)
+            return
     return list_bitmaps
 
 # main
+""" ISO 8583 - 3, has 3 bitmaps"""
 bitmap = "800001001C0000408000110000000020800001001C000040"
 parsed = parse_bitmaps(bitmap)
 get_DE(parsed)
