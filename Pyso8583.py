@@ -44,7 +44,7 @@ class Pyso8583:
             is_set = ( 1 << 64 - 1 ) &  list_bitmaps[count]
             # if the first bit is 0, got an error 
             if ( is_set == 0 ):
-                print("[ERROR] Error in set bitmap ", count, " isn't '1'", bin(list_bitmaps[count]), ( 1 << 64 - 1) &  list_bitmaps[count] != 0)
+                print("[ERROR] Error in set bitmap [", count, " isn't '1'", bin(list_bitmaps[count]), ( 1 << 64 - 1) &  list_bitmaps[count] != 0)
                 flag_bool = False
         if flag_bool:
             return True
@@ -58,7 +58,7 @@ class Pyso8583:
         # Verify if is Null
         if list_bitmaps is None:
             print("[ERROR] Error generate DE - list_bitmaps null or not exists")
-            return
+            return False
         # To each bitmap show the bit setted on
         for count in range ( 0, len(list_bitmaps) ):
             length = 64 * ( count + 1 )
@@ -72,6 +72,6 @@ class Pyso8583:
 
 if __name__ == '__main__':
     iso = Pyso8583()
-    bitmap = "800010000100000040000000000000004000000000000000"
+    bitmap = "8000100001000000C000040000000000C200040000000000"
     iso.set_bitmap(bitmap)
     print(iso.get_data_elements())
