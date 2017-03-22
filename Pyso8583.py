@@ -40,7 +40,7 @@ class Pyso8583:
             print("[ERROR] Error in parsing - bitmap not valid")
             return False
         # Verifies to each bitmap if first bit is '1'
-        for count in range(0, len(list_bitmaps)):
+        for count in range(0, len(list_bitmaps) - 1):
             is_set = ( 1 << 64 - 1 ) &  list_bitmaps[count]
             # if the first bit is 0, got an error 
             if ( is_set == 0 ):
