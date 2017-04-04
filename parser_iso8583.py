@@ -1,6 +1,8 @@
 from struct_iso8583 import BitmapIso
 from utils import *
-
+"""
+Class `ParserMessageIso` that parse the message from format ISO-8583
+"""
 class ParserMessageIso:
     # Property `message_iso` is a message type in ISO format ( string ), 
     # that contains 3 basics structs( MTI, Bitmap and Data Elements )
@@ -15,31 +17,53 @@ class ParserMessageIso:
     # Property `list_bitmap` List of bitmap
     data_element = ""
 
-
+    # Constructor ParserMessageIso
     def __init__(self, message_iso = ""):
         self.message_iso = message_iso
+        self.set_mti()
+        self.set_bitmap()
+        self.set_data_element()
     
-    def set_message_iso(self, message_iso):
+    # Set original Message in ISO-8583 format
+    def set_message_iso(self, message_iso = ""):
         self.message_iso = message_iso
 
+    # Get the original Message in ISO-8583 format
+    def get_message_iso(self):
+        return self.message_iso
+
+    # Set Message Type Identifier, with initial position in 0
     def set_mti(self, ini = 0):
         end = 4
         self.mti = self.message_iso[ini:end]
 
+    # Get Message Type Identifier properties
     def get_mti(self):
         return self.mti
 
-    def get_bitmap(self, ini = 4):
+    # Set a list of Bitmap, starting in position 4 in string. Recursive function
+    def set_bitmap(self, ini = 4):
         end = ini + 16
         bitmap = int(self.message_iso[ini:end], 16)
+        # Add to the list of bitmaps while the primary bit is 1
         self.list_bitmap.append(bitmap)
         if BitmapIso.has_another_bitmap(bitmap):
             ini = ini + 16
             end = end + 16
-            self.get_bitmap(ini)
+            self.set_bitmap(ini)
+
+    # Get Bitmap property
+    def get_bitmap(self):
         return self.list_bitmap
 
-    def get_parsed_data_elements(self):
-        ini = 
-        ini = len(self.list_bitmap) * 16
-        return self.message_iso[ini:-1]
+    # Set all the data elements in orinal format
+    def set_data_element(self):
+        ini = 0
+        ini = ini + len(self.mti)
+        ini = ini + len(self.list_bitmap) * 16
+        end = -1
+        self.data_element = self.message_iso[ini:end]
+
+    # Get all the data element in original format
+    def get_data_element(self):
+        return self.data_element
