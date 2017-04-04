@@ -6,38 +6,24 @@ if __name__ == '__main__':
     
     #Area of Class Tests
     #MessageIso() Tests
-    msg           = "02003238640128C182000020000000000010550403102449904108102449040399514840501100000007225376363180000126563000=21010000150010030000403000288WAMPHML100000000000005421499002440013000300300250004000100260015POSSE200130522A00320002040040000300100510003003006200020100740016526194CE486DA110007500370048219000020040002=0000000002004000200780001200790003002012600012014500012022800048000484032DF7A01019F360202f6DF61041F76AE73"
-    obj_msg       = ParserMessageIso(msg)
-    log_iso(obj_msg)
+    msg     = "02003238640128C182000020000000000010550403102449904108102449040399514840501100000007225376363180000126563000=21010000150010030000403000288WAMPHML100000000000005421499002440013000300300250004000100260015POSSE200130522A00320002040040000300100510003003006200020100740016526194CE486DA110007500370048219000020040002=0000000002004000200780001200790003002012600012014500012022800048000484032DF7A01019F360202f6DF61041F76AE73"
+    obj_iso = ParserMessageIso(msg)
 
-    # get values
-    mti = obj_msg.get_mti()
-    list_bitmap = obj_msg.get_bitmap()
-    data_element = obj_msg.get_data_element()
-
-    # Show Message in ISO format 
-    print_iso("Message Original", msg)
-    print_iso("Message Type Identifier", mti)
-    print_iso("Bitmaps", get_hex(list_bitmap))
-    print_iso("Data Element", data_element)
-
+    print_iso("Message Original", obj_iso.message_iso)
     #MtiIso() Tests
-    obj_mti = MtiIso()
-    log_iso(obj_mti)
-    obj_mti.mti = mti
-    print_iso("Message Type Identifier", obj_mti.mti)
+    omti = MtiIso()
+    omti.mti = obj_iso.get_mti()
+    print_iso("Message Type Identifier", omti.mti)
 
     #BitmapIso() Tests
-    obj_bitmap = BitmapIso()
-    log_iso(obj_bitmap)
-    obj_bitmap.bitmap = list_bitmap
-    print_iso("Bitmap",obj_bitmap.get_bitmap_parsed())
+    obit = BitmapIso()
+    obit.bitmap = obj_iso.get_bitmap()
+    print_iso("Bitmap",get_hex(obit.bitmap))
 
     #DataElementIso() Tests
-    obj_de = DataElementIso()
-    log_iso(obj_de)
-    obj_de.data_element = data_element
-    print_iso("Actives Data Element",obj_de.data_element)
+    odat = DataElementIso(obit.bitmap, obj_iso.get_data_element())
+    print_iso("Bits",odat.bits_active)
+    print_iso("Data Element",odat.data_element)
 
     """
     <INFO> - >> MSG ISO8583 
