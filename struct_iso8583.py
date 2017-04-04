@@ -1,6 +1,5 @@
-
 class MtiIso:
-    mti_iso = ""
+    mti = ""
 
     def __init__(self, mti_iso = ""):
         self.mti_iso = mti_iso
@@ -12,7 +11,7 @@ class MtiIso:
         return self.mti_iso
         
 class BitmapIso:
-    # Property that has DE's actives
+    # List of bitmaps 
     bitmap = []
 
     def __init__(self, bitmap = []):
@@ -26,9 +25,25 @@ class BitmapIso:
     def get_bitmap_iso(self):
         return self.bitmap
 
+    def get_bitmap_parsed(self, list_bitmap=[]):
+        data_elements = []
+        # Verify if is Null
+        if len(list_bitmap) is 0:
+            list_bitmap = self.bitmap
+        # To each list_bitmap show the bit setted on
+        for count in range ( 0, len(list_bitmap) ):
+            length = 64 * ( count + 1 )
+            for bit in range ( 1, length + 1 ):
+                # is_set identifies which Data Elements is set on list_bitmap
+                is_set = ( 1 << length - bit ) & list_bitmap[count]
+                # find bit
+                if ( is_set  != 0 ):
+                    data_elements.append(bit)
+        return data_elements
+
     @staticmethod
-    def has_another_bitmap(bitmap):
-        is_set = ( 1 << 64 - 1 ) &  bitmap
+    def has_another_bitmap(list_bitmap):
+        is_set = ( 1 << 64 - 1 ) &  list_bitmap
         # if the first bit is 0
         if ( is_set == 0 ):
             return False
@@ -37,6 +52,17 @@ class BitmapIso:
 
 class DataElementIso:
     data_element = ""
+
+    """docstring for MtiIso"""
+    def __init__(self, data_element = ""):
+        self.data_element = data_element
+    
+    def set_data_element_iso(self, data_element):
+        self.data_element = data_element
+    
+    def get_data_element_iso(self):
+        return self.data_element
+
 
     _BITS_VALUE_TYPE = {}
     # Every _BITS_VALUE_TYPE has:
@@ -176,27 +202,5 @@ class DataElementIso:
     _BITS_VALUE_TYPE[127] = ['127','Reserved for private use','LLL',999,'ans']
     _BITS_VALUE_TYPE[128] = ['128','Message authentication code (MAC) field','B',16,'b']
 
-    """docstring for MtiIso"""
-    def __init__(self, data_element = ""):
-        self.data_element = data_element
     
-    def set_data_element_iso(self, data_element):
-        self.data_element = data_element
-
-    def get_data_element_iso(self, bitmap):
-        data_elements = []
-        list_bitmap  = bitmap
-        # Verify if is Null
-        if list_bitmap is None:
-            print("[ERROR] Error generate DE - list_bitmap null or not exists")
-            return False
-        # To each bitmap show the bit setted on
-        for count in range ( 0, len(list_bitmap) ):
-            length = 64 * ( count + 1 )
-            for bit in range ( 1, length + 1 ):
-                # is_set identifies which Data Elements is set on bitmap
-                is_set = ( 1 << length - bit ) & list_bitmap[count]
-                # find bit
-                if ( is_set  != 0 ):
-                    data_elements.append(bit)
-        return data_elements
+    
