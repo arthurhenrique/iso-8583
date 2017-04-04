@@ -25,7 +25,7 @@ class ParserMessageIso:
         end = ini + 16
         bitmap = int(self.message_iso[ini:end], 16)
         self.list_bitmap.append(bitmap)
-        if Bitmap.has_another_bitmap(bitmap):
+        if BitmapIso.has_another_bitmap(bitmap):
             ini = ini + 16
             end = end + 16
             self.get_bitmap(ini)
@@ -47,7 +47,7 @@ class MtiIso:
     def get_mti_iso(self):
         return self.mti_iso
 
-class Bitmap:
+class BitmapIso:
     # Property that has DE's actives
     bitmap = []
 
@@ -119,9 +119,9 @@ if __name__ == '__main__':
     obj_mti.set_mti_iso = mti
     print(obj_mti.get_mti_iso())
 
-    #Bitmap() Tests
-    print("\nBitmap() Tests")
-    obj_bitmap = Bitmap()
+    #BitmapIso() Tests
+    print("\nBitmapIso() Tests")
+    obj_bitmap = BitmapIso()
     obj_bitmap.set_bitmap_iso = list_bitmap
     print(obj_bitmap.get_bitmap_iso())
 
