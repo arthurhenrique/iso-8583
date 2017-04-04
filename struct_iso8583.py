@@ -24,9 +24,10 @@ class BitmapIso:
     # Returns list[] type 
     def get_bitmap_iso(self):
         return self.bitmap
-
-    def get_bitmap_parsed(self, list_bitmap=[]):
-        data_elements = []
+    
+    @staticmethod
+    def get_bitmap_parsed(list_bitmap):
+        bits = []
         # Verify if is Null
         if len(list_bitmap) is 0:
             list_bitmap = self.bitmap
@@ -38,8 +39,8 @@ class BitmapIso:
                 is_set = ( 1 << length - bit ) & list_bitmap[count]
                 # find bit
                 if ( is_set  != 0 ):
-                    data_elements.append(bit)
-        return data_elements
+                    bits.append(bit)
+        return bits
 
     @staticmethod
     def has_another_bitmap(list_bitmap):
@@ -51,10 +52,14 @@ class BitmapIso:
             return True
 
 class DataElementIso:
+    
+    bits_active = []
+
     data_element = ""
 
     """docstring for MtiIso"""
-    def __init__(self, data_element = ""):
+    def __init__(self,bitmap=[],  data_element = ""):
+        self.bits_active  = BitmapIso.get_bitmap_parsed(bitmap)
         self.data_element = data_element
     
     def set_data_element_iso(self, data_element):
@@ -201,6 +206,3 @@ class DataElementIso:
     _BITS_VALUE_TYPE[126] = ['126','Issuer trace id','LL',6,'ans']
     _BITS_VALUE_TYPE[127] = ['127','Reserved for private use','LLL',999,'ans']
     _BITS_VALUE_TYPE[128] = ['128','Message authentication code (MAC) field','B',16,'b']
-
-    
-    
