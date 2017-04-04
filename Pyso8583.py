@@ -103,31 +103,32 @@ if __name__ == '__main__':
     #Area of Class Tests
     #MessageIso() Tests
     print("MessageIso() Tests")
-    msg = "02003238640128C182000020000000000010550403102449904108102449040399514840501100000007225376363180000126563000=21010000150010030000403000288WAMPHML100000000000005421499002440013000300300250004000100260015POSSE200130522A00320002040040000300100510003003006200020100740016526194CE486DA110007500370048219000020040002=0000000002004000200780001200790003002012600012014500012022800048000484032DF7A01019F360202f6DF61041F76AE73"
-    obj_msg = ParserMessageIso(msg)
+    msg           = "02003238640128C182000020000000000010550403102449904108102449040399514840501100000007225376363180000126563000=21010000150010030000403000288WAMPHML100000000000005421499002440013000300300250004000100260015POSSE200130522A00320002040040000300100510003003006200020100740016526194CE486DA110007500370048219000020040002=0000000002004000200780001200790003002012600012014500012022800048000484032DF7A01019F360202f6DF61041F76AE73"
+    obj_msg       = ParserMessageIso(msg)
+    mti           = obj_msg.get_parsed_mti()
+    list_bitmap   = obj_msg.get_parsed_bitmap()
+    de            = obj_msg.get_parsed_data_elements()
     print("Message Original          ", msg)
-    print("<Message Type Identifier> ", obj_msg.get_parsed_mti())
-    print("<Bitmaps>                 ", obj_msg.get_parsed_bitmap())
-    print("<Data Element>            ", obj_msg.get_parsed_data_elements())
+    print("<Message Type Identifier> ", mti)
+    print("<Bitmaps>                 ", list_bitmap)
+    print("<Data Element>            ", de)
 
     #MtiIso() Teste
     print("\nMtiIso() Tests")
     obj_mti = MtiIso()
-    obj_mti.set_mti_iso = obj_msg.get_parsed_mti()
+    obj_mti.set_mti_iso = mti
     print(obj_mti.get_mti_iso())
 
     #Bitmap() Tests
     print("\nBitmap() Tests")
     obj_bitmap = Bitmap()
-    obj_bitmap.set_bitmap_iso = obj_msg.get_parsed_bitmap()
+    obj_bitmap.set_bitmap_iso = list_bitmap
     print(obj_bitmap.get_bitmap_iso())
 
     #DataElementIso() Tests
     print("\nDataElementIso() Tests")
     obj_de = DataElementIso()
-    bitmap = obj_msg.get_parsed_bitmap()
-    print(obj_de.get_data_element_iso(bitmap))
-
+    print(obj_de.get_data_element_iso(list_bitmap))
 
     """
     <INFO> - >> MSG ISO8583 
