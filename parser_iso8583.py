@@ -11,10 +11,10 @@ class ParserMessageIso:
     # Property `mti` contains message type identifier
     mti = ""
 
-    # Property `list_bitmap` List of bitmap
-    list_bitmap = []
+    # Property `bitmap` List of bitmap
+    bitmap = []
 
-    # Property `list_bitmap` List of bitmap
+    # Property `data_element` data elements
     data_element = ""
 
     # Constructor ParserMessageIso
@@ -46,7 +46,7 @@ class ParserMessageIso:
         end = ini + 16
         bitmap = int(self.message_iso[ini:end], 16)
         # Add to the list of bitmaps while the primary bit is 1
-        self.list_bitmap.append(bitmap)
+        self.bitmap.append(bitmap)
         if BitmapIso.has_another_bitmap(bitmap):
             ini = ini + 16
             end = end + 16
@@ -54,13 +54,13 @@ class ParserMessageIso:
 
     # Get Bitmap property
     def get_bitmap(self):
-        return self.list_bitmap
+        return self.bitmap
 
     # Set all the data elements in orinal format
     def set_data_element(self):
         ini = 0
         ini = ini + len(self.mti)
-        ini = ini + len(self.list_bitmap) * 16
+        ini = ini + len(self.bitmap) * 16
         end = -1
         self.data_element = self.message_iso[ini:end]
 
