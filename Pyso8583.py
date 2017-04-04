@@ -1,7 +1,6 @@
 """MessageIso is a message type in ISO format ( string ), 
 that contains 3 basics structs( MTI, Bitmap and Data Elements )"""
-class MessageIso:
-
+class ParserMessageIso:
     # Property `message_iso` is a message type in ISO format ( string ), 
     # that contains 3 basics structs( MTI, Bitmap and Data Elements )
     message_iso = ""
@@ -18,47 +17,37 @@ class MessageIso:
     def get_message_iso(self):
         return self.message_iso
 
-    def set_list_bitmap(self, bitmap):
-        self.list_bitmap.append(bitmap)
-
-    def get_list_bitmap(self):
-        return self.list_bitmap
-
-    def parse_mti(self, ini):
+    def get_parsed_mti(self, ini = 0):
         end = 4
         return self.message_iso[ini:end]
-    """
-    call parse_bitmap while has another bitmap
-    """
-    def parse_bitmap(self, ini):
+
+    def get_parsed_bitmap(self, ini = 4):
         end = ini + 16
         bitmap = int(self.message_iso[ini:end], 16)
-        self.set_list_bitmap(hex(bitmap)[2:])
+        self.list_bitmap.append(bitmap)
         if Bitmap.has_another_bitmap(bitmap):
             ini = ini + 16
             end = end + 16
-            self.parse_bitmap(ini)
+            self.get_bitmap(ini)
         return self.list_bitmap
 
-    def parse_data_elements(self):
-        pass
-        return self.message_iso[20:-1]
+    def get_parsed_data_elements(self):
+        return self.message_iso[len(self.list_bitmap):-1]
+
 
 class MtiIso:
-
     mti_iso = ""
-    """docstring for MtiIso"""
+
     def __init__(self, mti_iso = ""):
         self.mti_iso = mti_iso
     
-    def set_message_iso(self, mti_iso):
+    def set_mti_iso(self, mti_iso):
         self.mti_iso = mti_iso
 
-    def get_message_iso(self):
+    def get_mti_iso(self):
         return self.mti_iso
 
 class Bitmap:
-    
     # Property that has DE's actives
     bitmap = []
 
@@ -66,12 +55,11 @@ class Bitmap:
         self.bitmap = bitmap
 
     # Set an string value to property bitmap
-    def set_bitmap(self, str_bitmap):
-        parsed = self.parse_bitmap(str_bitmap)
-        self.bitmap = parsed
+    def set_bitmap_iso(self, bitmap):
+        self.bitmap = bitmap
 
     # Returns list[] type 
-    def get_bitmap(self):
+    def get_bitmap_iso(self):
         return self.bitmap
 
     @staticmethod
@@ -83,40 +71,64 @@ class Bitmap:
         else:
             return True
 
-    # Shows the Data Elements Acives in bitmap
-    def get_data_elements(self):
-        data_elements = []
-        list_bitmaps  = self.bitmap
-        # Verify if is Null
-        if list_bitmaps is None:
-            print("[ERROR] Error generate DE - list_bitmaps null or not exists")
-            return False
-        # To each bitmap show the bit setted on
-        for count in range ( 0, len(list_bitmaps) ):
-            length = 64 * ( count + 1 )
-            for bit in range ( 1, length + 1 ):
-                # is_set identifies which Data Elements is set on bitmap
-                is_set = ( 1 << length - bit ) & list_bitmaps[count]
-                # find bit
-                if ( is_set  != 0 ):
-                    data_elements.append(bit)
-        return data_elements
-
 class DataElementIso:
     data_element = ""
     """docstring for MtiIso"""
     def __init__(self, data_element = ""):
         self.data_element = data_element
     
-    def set_message_iso(self, data_element):
+    def set_data_element_iso(self, data_element):
         self.data_element = data_element
 
-    def get_message_iso(self):
-        return self.data_element
+    def get_data_element_iso(self, bitmap):
+        data_elements = []
+        list_bitmap  = bitmap
+        # Verify if is Null
+        if list_bitmap is None:
+            print("[ERROR] Error generate DE - list_bitmap null or not exists")
+            return False
+        # To each bitmap show the bit setted on
+        for count in range ( 0, len(list_bitmap) ):
+            length = 64 * ( count + 1 )
+            for bit in range ( 1, length + 1 ):
+                # is_set identifies which Data Elements is set on bitmap
+                is_set = ( 1 << length - bit ) & list_bitmap[count]
+                # find bit
+                if ( is_set  != 0 ):
+                    data_elements.append(bit)
+        return data_elements
         
         
 if __name__ == '__main__':
     #Area of Class Tests
+    #MessageIso() Tests
+    print("MessageIso() Tests")
+    msg = "02003238640128C182000020000000000010550403102449904108102449040399514840501100000007225376363180000126563000=21010000150010030000403000288WAMPHML100000000000005421499002440013000300300250004000100260015POSSE200130522A00320002040040000300100510003003006200020100740016526194CE486DA110007500370048219000020040002=0000000002004000200780001200790003002012600012014500012022800048000484032DF7A01019F360202f6DF61041F76AE73"
+    obj_msg = ParserMessageIso(msg)
+    print("Message Original          ", msg)
+    print("<Message Type Identifier> ", obj_msg.get_parsed_mti())
+    print("<Bitmaps>                 ", obj_msg.get_parsed_bitmap())
+    print("<Data Element>            ", obj_msg.get_parsed_data_elements())
+
+    #MtiIso() Teste
+    print("\nMtiIso() Tests")
+    obj_mti = MtiIso()
+    obj_mti.set_mti_iso = obj_msg.get_parsed_mti()
+    print(obj_mti.get_mti_iso())
+
+    #Bitmap() Tests
+    print("\nBitmap() Tests")
+    obj_bitmap = Bitmap()
+    obj_bitmap.set_bitmap_iso = obj_msg.get_parsed_bitmap()
+    print(obj_bitmap.get_bitmap_iso())
+
+    #DataElementIso() Tests
+    print("\nDataElementIso() Tests")
+    obj_de = DataElementIso()
+    bitmap = obj_msg.get_parsed_bitmap()
+    print(obj_de.get_data_element_iso(bitmap))
+
+
     """
     <INFO> - >> MSG ISO8583 
     02003238640128C182000020000000000010550403102449904108102449040399514840501100000007225376363180000126563000=21010000150010030000403000288WAMPHML100000000000005421499002440013000300300250004000100260015POSSE200130522A00320002040040000300100510003003006200020100740016526194CE486DA110007500370048219000020040002=0000000002004000200780001200790003002012600012014500012022800048000484032DF7A01019F360202f6DF61041F76AE73
@@ -141,28 +153,3 @@ if __name__ == '__main__':
     <Data Element 049      > [484] -> [Currency code, transaction]
     <Data Element 055      > [032] [DF7A01019F360202f6DF61041F76AE73] -> [Reserved ISO]
     """
-    #MessageIso() Tests
-    msg = "02003238640128C182000020000000000010550403102449904108102449040399514840501100000007225376363180000126563000=21010000150010030000403000288WAMPHML100000000000005421499002440013000300300250004000100260015POSSE200130522A00320002040040000300100510003003006200020100740016526194CE486DA110007500370048219000020040002=0000000002004000200780001200790003002012600012014500012022800048000484032DF7A01019F360202f6DF61041F76AE73"
-    test_msg = MessageIso(msg)
-    print("MTI")
-    print(test_msg.parse_mti(0))
-    print()
-    print("BITMAP")
-    print(test_msg.parse_bitmap(4))
-    print()
-    print("DATA ELEMENTS")
-    print(test_msg.parse_data_elements())
-
-    #MtiIso() Tests
-
-    #Bitmap() Tests
-    test_bitmap = Bitmap()
-    bitmap = "8000100001000000"
-    bitmap = "3238640128C18200"
-    bitmap = "A20000010400020080000000100000104000040000000000"
-    bitmap = "3238640128C18200"
-    test_bitmap.set_bitmap(bitmap)
-    print(test_bitmap.get_data_elements())
-    
-    
-    #DataElementIso() Tests
