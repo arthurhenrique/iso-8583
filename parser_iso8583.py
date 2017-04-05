@@ -8,7 +8,7 @@ class ParserMessageIso:
     # that contains 3 basics structs( MTI, Bitmap and Data Elements )
     message_iso = ""
 
-    # Property `mti` contains message type identifier
+    # Property `mti` contains message type Indicator
     mti = ""
 
     # Property `bitmap` List of bitmap
@@ -32,12 +32,12 @@ class ParserMessageIso:
     def get_message_iso(self):
         return self.message_iso
 
-    # Set Message Type Identifier, with initial position in 0
+    # Set Message Type Indicator, with initial position in 0
     def set_mti(self, ini = 0):
         end = 4
         self.mti = self.message_iso[ini:end]
 
-    # Get Message Type Identifier properties
+    # Get Message Type Indicator properties
     def get_mti(self):
         return self.mti
 
