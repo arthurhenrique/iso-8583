@@ -55,10 +55,12 @@ class BitmapIso:
             return True
 
 class DataElementIso:
-    
-    bits_active = []
+
+    list_bitmap = []
 
     data_element = ""
+
+    bit_value    = []
 
     BITS_VALUE_TYPE = {}
 
@@ -201,7 +203,7 @@ class DataElementIso:
     BITS_VALUE_TYPE[128] = ['128','Message authentication code (MAC) field','B',16,'b']
 
     def __init__(self,bitmap=[],  data_element = ""):
-        self.bits_active  = BitmapIso.get_bitmap_parsed(bitmap)
+        self.list_bitmap  = bitmap
         self.data_element = data_element
     
     def set_data_element_iso(self, data_element):
@@ -210,14 +212,24 @@ class DataElementIso:
     def get_data_element_iso(self):
         return self.data_element
 
-    def show_data_elements(self):
-        ini = 0
-        end = 0
+    def set_bit_value(self):
+        ini    = 0
+        end    = 0
         length = 0
-        for count in range(0,len(self.bits_active)):
-            bit = self.bits_active[count]
-            ini = ini + length
+        bits_active = BitmapIso.get_bitmap_parsed(self.list_bitmap)
+        # If has 1 and/or 65 there is bitmaps extend
+        for count in range(0,len(bits_active)):
+            bit    = bits_active[count]
+            ini    = ini + length
             length = self.BITS_VALUE_TYPE[bit][3]
-            end = ini + length
-            print("<DE_{:03d}> [{}] -> {}".format(bit, self.data_element[ini:end], self.BITS_VALUE_TYPE[bit][1]))
+            end    = ini + length
+            self.bit_value.append([bit, self.data_element[ini:end]])
 
+    def show_data_elements(self):
+        bit = 0
+        value = 0
+        self.set_bit_value()
+        for count in range(0, len(self.bit_value)):
+            bit = self.bit_value[count][0]
+            value = self.bit_value[count][1]
+            print("<DE_{:03d}> [{}] -> {}".format(bit,value, self.BITS_VALUE_TYPE[bit][1]))
