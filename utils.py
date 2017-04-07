@@ -25,3 +25,9 @@ def debug_bitmap(value):
     str = str + "\t{:064b}".format(value)
     return str
     
+def bits_to_bitmap(list_bitmap = []):
+    bit = 0
+    for count in range(0,len(list_bitmap)):
+        bit = bit + (1 << 64 - list_bitmap[count])
+    return bit
+
