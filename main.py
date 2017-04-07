@@ -26,6 +26,12 @@ if __name__ == '__main__':
     #DataElementIso() Tests
     odat = DataElementIso(obit.bitmap, obj_iso.get_data_element())
     odat.show_data_elements()
+    
+    list_bits = [3,4,7,11,12,13,32,39,43,49]
+    print("bin: {:064b}".format(bits_to_bitmap(list_bits)))
+    print("hex: {:016X}".format(bits_to_bitmap(list_bits)))
+    print("dec: {:0d}".format(bits_to_bitmap(list_bits)))
+
 
     """
     <INFO> - >> MSG ISO8583
