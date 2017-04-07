@@ -5,7 +5,7 @@ def log_iso(obj):
     print("{} class {} - test".format(br,obj_t))
 
 def print_iso(str_obs, value):
-    print("<",str_obs,">\n\t", value)
+    print("<{}>\n\t{}".format(str_obs,value))
 
 def get_hex(obj):
     #in case of list
@@ -17,3 +17,11 @@ def get_hex(obj):
     #in case of number real or integer
     if "float" or "int" or "double" in str(type(obj)):
         return format(obj, '02X')
+
+def debug_bitmap(value):
+    str = ""
+    str = str + "0________10________20________30________40________50________60__64\n"
+    str = str + "\t1234567890123456789012345678901234567890123456789012345678901234  n-th bit\n"
+    str = str + "\t{:064b}".format(value)
+    return str
+    
