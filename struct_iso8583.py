@@ -7,11 +7,6 @@ class MtiIso:
     def __init__(self, mti_iso = ""):
         self.mti_iso = mti_iso
     
-    def set_mti_iso(self, mti_iso):
-        self.mti_iso = mti_iso
-
-    def get_mti_iso(self):
-        return self.mti_iso
         
 class BitmapIso:
     # List of bitmaps 
@@ -19,14 +14,6 @@ class BitmapIso:
 
     def __init__(self, bitmap = []):
         self.bitmap = bitmap
-
-    # Set an string value to property bitmap
-    def set_bitmap_iso(self, bitmap):
-        self.bitmap = bitmap
-
-    # Returns list[] type 
-    def get_bitmap_iso(self):
-        return self.bitmap
     
     @staticmethod
     def get_bitmap_parsed(list_bitmap):
@@ -90,7 +77,7 @@ class DataElementIso:
     BITS_VALUE_TYPE[15] = ['15','Date settlement','N',4,'n']
     BITS_VALUE_TYPE[16] = ['16','Date conversion','N',4,'n']
     BITS_VALUE_TYPE[17] = ['17','Date capture','N',4,'n']
-    BITS_VALUE_TYPE[18] = ['18','Message error indicator','LLL',4,'n']
+    BITS_VALUE_TYPE[18] = ['18','Message error indicator','N',4,'n']
     BITS_VALUE_TYPE[19] = ['19','Country code acquiring institution','N',3,'n']
     BITS_VALUE_TYPE[20] = ['20','Country code primary account number (PAN)','N',3,'n']
     BITS_VALUE_TYPE[21] = ['21','Transaction life cycle identification data','ANS',3,'n']
@@ -113,8 +100,8 @@ class DataElementIso:
     BITS_VALUE_TYPE[38] = ['38','Approval code','N',6,'an']
     BITS_VALUE_TYPE[39] = ['39','Action code','A',2,'an']
     BITS_VALUE_TYPE[40] = ['40','Service code','N',3,'an']
-    BITS_VALUE_TYPE[41] = ['41','Card acceptor terminal identification','N',8,'ans']
-    BITS_VALUE_TYPE[42] = ['42','Card acceptor identification code','A',15,'ans']
+    BITS_VALUE_TYPE[41] = ['41','Card acceptor terminal identification','AN',8,'ans']
+    BITS_VALUE_TYPE[42] = ['42','Card acceptor identification code','AN',15,'ans']
     BITS_VALUE_TYPE[43] = ['43','Card acceptor name/location','A',40,'asn']
     BITS_VALUE_TYPE[44] = ['44','Additional response data','LL',25,'an']
     BITS_VALUE_TYPE[45] = ['45','Track 1 data','LL',76,'an']
@@ -217,12 +204,16 @@ class DataElementIso:
         end    = 0
         length = 0
         bits_active = BitmapIso.get_bitmap_parsed(self.list_bitmap)
-        # If has 1 and/or 65 there is bitmaps extend
         for count in range(0,len(bits_active)):
             bit    = bits_active[count]
             ini    = ini + length
-            length = self.BITS_VALUE_TYPE[bit][3]
-            end    = ini + length
+            if self.BITS_VALUE_TYPE[bit][2] is 'LL':
+                length = int(self.data_element[ini:ini+2], 10) + 2
+            elif self.BITS_VALUE_TYPE[bit][2] is 'LLL':
+                length = int(self.data_element[ini:ini+3], 10) + 3
+            else:
+                length = self.BITS_VALUE_TYPE[bit][3]
+            end = ini + length
             self.bit_value.append([bit, self.data_element[ini:end]])
 
     def show_data_elements(self):
