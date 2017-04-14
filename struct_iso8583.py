@@ -201,23 +201,16 @@ class DataElementIso:
         else:
             return  self.BITS_VALUE_TYPE[bit][3]
 
-    def set_bit_value(self):
+    def parse_data_element(self):
         ini    = 0
         end    = 0
         length = 0
         bits_active = BitmapIso.get_bitmap_parsed(self.list_bitmap)
+        list_bit_value = []
         for count in range(0,len(bits_active)):
             bit    = bits_active[count]
             ini    = ini + length
             length = self.get_length(ini,bit)
-            end = ini + length
-            self.bit_value.append([bit, self.data_element[ini:end]])
-
-    def show_data_elements(self):
-        bit = 0
-        value = 0
-        self.set_bit_value()
-        for count in range(0, len(self.bit_value)):
-            bit = self.bit_value[count][0]
-            value = self.bit_value[count][1]
-            print("<DE_{:03d}> [{}] -> {}".format(bit,value, self.BITS_VALUE_TYPE[bit][1]))
+            end    = ini + length
+            list_bit_value.append([bit, self.data_element[ini:end]])
+        return list_bit_value

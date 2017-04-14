@@ -1,11 +1,5 @@
-br = "\n----------------------------------------------------------------------------\n"
-
-def log_iso(obj):
-    obj_t = str(type(obj)).split('.')[1].replace('\'>','')
-    print("{} class {} - test".format(br,obj_t))
-
 def print_iso(str_obs, value):
-    print("<{}>\n\t{}".format(str_obs,value))
+    print("{}\n\t{}".format(str_obs,value))
 
 def get_hex(obj):
     #in case of list

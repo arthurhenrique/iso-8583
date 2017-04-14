@@ -1,4 +1,4 @@
-from struct_iso8583 import BitmapIso
+from struct_iso8583 import *
 from utils import *
 """
 Class `ParserMessageIso` that parse the message from format ISO-8583
@@ -39,7 +39,9 @@ class ParserMessageIso:
 
     # Get Message Type Indicator properties
     def get_mti(self):
-        return self.mti
+        omti = MtiIso()
+        omti.mti = self.mti
+        return omti.mti
 
     # Set a list of Bitmap, starting in position 4 in string. Recursive function
     def set_bitmap(self, ini = 4):
@@ -54,7 +56,9 @@ class ParserMessageIso:
 
     # Get Bitmap property
     def get_bitmap(self):
-        return self.bitmap
+        obit = BitmapIso()
+        obit.bitmap = self.bitmap
+        return get_hex(obit.bitmap[0])
 
     # Set all the data elements in orinal format
     def set_data_element(self):
@@ -65,4 +69,13 @@ class ParserMessageIso:
 
     # Get all the data element in original format
     def get_data_element(self):
-        return self.data_element
+        ode     = DataElementIso(self.bitmap, self.data_element)
+        list_de = ode.parse_data_element()
+        bit     = 0
+        value   = 0
+        str_de   = ""
+        for count in range(0, len(list_de)):
+            bit    = list_de[count][0]
+            value  = list_de[count][1]
+            str_de = str_de + "<DE_{:03d}> [{}] -> {}\n\t".format(bit,value, ode.BITS_VALUE_TYPE[bit][1])
+        return str_de
