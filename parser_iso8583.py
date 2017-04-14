@@ -60,9 +60,8 @@ class ParserMessageIso:
     def set_data_element(self):
         ini = 0
         ini = ini + len(self.mti)
-        ini = ini + len(self.bitmap) * 16
-        end = -1
-        self.data_element = self.message_iso[ini:end]
+        ini = ini +  16
+        self.data_element = self.message_iso[ini:]
 
     # Get all the data element in original format
     def get_data_element(self):

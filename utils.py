@@ -28,6 +28,6 @@ def debug_bitmap(value):
 def bits_to_bitmap(list_bitmap = []):
     bit = 0
     for count in range(0,len(list_bitmap)):
-        bit = bit + (1 << 64 - list_bitmap[count])
+        bit = bit + (1 << 128 - list_bitmap[count])
     return bit
 

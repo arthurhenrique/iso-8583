@@ -193,11 +193,13 @@ class DataElementIso:
         self.list_bitmap  = bitmap
         self.data_element = data_element
     
-    def set_data_element_iso(self, data_element):
-        self.data_element = data_element
-    
-    def get_data_element_iso(self):
-        return self.data_element
+    def get_length(self, ini, bit):
+        if self.BITS_VALUE_TYPE[bit][2] is 'LL':
+            return  int(self.data_element[ini:ini+2], 10) + 2
+        elif self.BITS_VALUE_TYPE[bit][2] is 'LLL':
+            return  int(self.data_element[ini:ini+3], 10) + 3
+        else:
+            return  self.BITS_VALUE_TYPE[bit][3]
 
     def set_bit_value(self):
         ini    = 0
@@ -207,12 +209,7 @@ class DataElementIso:
         for count in range(0,len(bits_active)):
             bit    = bits_active[count]
             ini    = ini + length
-            if self.BITS_VALUE_TYPE[bit][2] is 'LL':
-                length = int(self.data_element[ini:ini+2], 10) + 2
-            elif self.BITS_VALUE_TYPE[bit][2] is 'LLL':
-                length = int(self.data_element[ini:ini+3], 10) + 3
-            else:
-                length = self.BITS_VALUE_TYPE[bit][3]
+            length = self.get_length(ini,bit)
             end = ini + length
             self.bit_value.append([bit, self.data_element[ini:end]])
 
