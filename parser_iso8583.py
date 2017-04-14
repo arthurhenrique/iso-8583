@@ -54,7 +54,7 @@ class ParserMessageIso:
             end = end + 16
             self.set_bitmap(ini)
 
-    # Get Bitmap property
+    # Get Bitmap parsed
     def get_bitmap(self):
         obit = BitmapIso()
         obit.bitmap = self.bitmap
@@ -67,7 +67,7 @@ class ParserMessageIso:
         ini = ini +  16
         self.data_element = self.message_iso[ini:]
 
-    # Get all the data element in original format
+    # Get all the data element
     def get_data_element(self):
         ode     = DataElementIso(self.bitmap, self.data_element)
         list_de = ode.parse_data_element()
