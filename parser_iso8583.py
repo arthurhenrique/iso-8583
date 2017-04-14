@@ -77,5 +77,7 @@ class ParserMessageIso:
         for count in range(0, len(list_de)):
             bit    = list_de[count][0]
             value  = list_de[count][1]
-            str_de = str_de + "<DE_{:03d}> [{}] -> {}\n\t".format(bit,value, ode.BITS_VALUE_TYPE[bit][1])
+            str_de = str_de + "<Data Element {:03d}> [{}] -> {}\n\t".format(bit,value, ode.BITS_VALUE_TYPE[bit][1])
+        #remove the last '\n\t'
+        str_de = str_de[:-2]
         return str_de
