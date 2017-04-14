@@ -6,4 +6,4 @@ ISO 8583 Implemented on Python
 
 run with:
 
-	`python main.py`
+	python main.py
