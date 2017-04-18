@@ -16,7 +16,7 @@ class BitmapIso:
         self.bitmap = bitmap
     
     @staticmethod
-    def get_bitmap_parsed(list_bitmap):
+    def get_bitmap(list_bitmap):
         bits = []
         # Verify if is Null
         if len(list_bitmap) is 0:
@@ -194,10 +194,11 @@ class DataElementIso:
         self.data_element = data_element
     
     def get_length(self, ini, bit):
-        if self.BITS_VALUE_TYPE[bit][2] is 'LL':
-            return  int(self.data_element[ini:ini+2], 10) + 2
-        elif self.BITS_VALUE_TYPE[bit][2] is 'LLL':
-            return  int(self.data_element[ini:ini+3], 10) + 3
+        type_de = self.BITS_VALUE_TYPE[bit][2]
+        if  type_de is 'LL':
+            return  int(self.data_element[ini:ini + 2], 10) + 2
+        elif type_de is 'LLL':
+            return  int(self.data_element[ini:ini + 3], 10) + 3
         else:
             return  self.BITS_VALUE_TYPE[bit][3]
 
@@ -205,7 +206,7 @@ class DataElementIso:
         ini    = 0
         end    = 0
         length = 0
-        bits_active = BitmapIso.get_bitmap_parsed(self.list_bitmap)
+        bits_active = BitmapIso.get_bitmap(self.list_bitmap)
         list_bit_value = []
         for count in range(0,len(bits_active)):
             bit    = bits_active[count]

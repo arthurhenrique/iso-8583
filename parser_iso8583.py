@@ -63,21 +63,12 @@ class ParserMessageIso:
     # Set all the data elements in orinal format
     def set_data_element(self):
         ini = 0
-        ini = ini + len(self.mti)
-        ini = ini +  16
+        ini = ini + 4
+        ini = ini + 16
         self.data_element = self.message_iso[ini:]
 
     # Get all the data element
     def get_data_element(self):
         ode     = DataElementIso(self.bitmap, self.data_element)
-        list_de = ode.parse_data_element()
-        bit     = 0
-        value   = 0
-        str_de   = ""
-        for count in range(0, len(list_de)):
-            bit    = list_de[count][0]
-            value  = list_de[count][1]
-            str_de = str_de + "<Data Element {:03d}> [{}] -> {}\n\t".format(bit,value, ode.BITS_VALUE_TYPE[bit][1])
-        #remove the last '\n\t'
-        str_de = str_de[:-2]
-        return str_de
+        list_bit_value = ode.parse_data_element()
+        return list_bit_value
