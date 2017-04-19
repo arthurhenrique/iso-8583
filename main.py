@@ -28,4 +28,4 @@ if __name__ == '__main__':
     
     print("<Data Elements>")
     for bit in range(0,len(list_de)):
-        print("\t<Data Element {:03d}> [{}] -> {}\t".format(list_de[bit][0],list_de[bit][1], DataElementIso.BITS_VALUE_TYPE[bit][1]))
+        print("\t<Data Element {:03d}> [{}] -> {}\t".format(list_de[bit][0],list_de[bit][1], DataElementIso.BITS_VALUE_TYPE[list_de[bit][0]] [1]))
