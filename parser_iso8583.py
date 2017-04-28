@@ -24,18 +24,9 @@ class ParserMessageIso:
         self.set_bitmap()
         self.set_data_element()
     
-    # Set original Message in ISO-8583 format
-    def set_message_iso(self, message_iso = ""):
-        self.message_iso = message_iso
-
     # Get the original Message in ISO-8583 format
     def get_message_iso(self):
         return self.message_iso
-
-    # Set Message Type Indicator, with initial position in 0
-    def set_mti(self, ini = 0):
-        end = 4
-        self.mti = self.message_iso[ini:end]
 
     # Get Message Type Indicator properties
     def get_mti(self):
@@ -43,6 +34,27 @@ class ParserMessageIso:
         omti.mti = self.mti
         return omti.mti
 
+    # Get Bitmap parsed
+    def get_bitmap(self):
+        obit = BitmapIso()
+        obit.bitmap = self.bitmap
+        return get_hex(obit.bitmap[0])
+
+    # Get all the data element
+    def get_data_element(self):
+        ode     = DataElementIso(self.bitmap, self.data_element)
+        list_bit_value = ode.parse_data_element()
+        return list_bit_value
+
+    # Set original Message in ISO-8583 format
+    def set_message_iso(self, message_iso = ""):
+        self.message_iso = message_iso
+    
+    # Set Message Type Indicator, with initial position in 0
+    def set_mti(self, ini = 0):
+        end = 4
+        self.mti = self.message_iso[ini:end]
+    
     # Set a list of Bitmap, starting in position 4 in string. Recursive function
     def set_bitmap(self, ini = 4):
         end = ini + 16
@@ -53,22 +65,10 @@ class ParserMessageIso:
             ini = ini + 16
             end = end + 16
             self.set_bitmap(ini)
-
-    # Get Bitmap parsed
-    def get_bitmap(self):
-        obit = BitmapIso()
-        obit.bitmap = self.bitmap
-        return get_hex(obit.bitmap[0])
-
+    
     # Set all the data elements in orinal format
     def set_data_element(self):
         ini = 0
         ini = ini + 4
         ini = ini + 16
         self.data_element = self.message_iso[ini:]
-
-    # Get all the data element
-    def get_data_element(self):
-        ode     = DataElementIso(self.bitmap, self.data_element)
-        list_bit_value = ode.parse_data_element()
-        return list_bit_value
