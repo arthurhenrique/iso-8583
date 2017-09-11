@@ -2,8 +2,8 @@ Pyso8583
 ===================
 
 
-ISO 8583 Implemented on Python
+ISO 8583 simple parser implemented on Python.
 
 run with:
 
-	python main.py
+	python Parser.py
