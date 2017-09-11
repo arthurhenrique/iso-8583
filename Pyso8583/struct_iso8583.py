@@ -1,3 +1,4 @@
+# encoding: utf-8
 import struct
 from utils import *
 
@@ -52,21 +53,21 @@ class DataElementIso:
     BITS_VALUE_TYPE = {}
 
     # Every BITS_VALUE_TYPE has:
-    # BITS_VALUE_TYPE[N] = [ X,Y, Z, W,K]
+    # BITS_VALUE_TYPE[N] = [X, Y, Z, W, K]
     # N = bitnumber
     # X = smallStr representation of the bit meanning
     # Y = large str representation
     # Z = type of the bit (B, N, A, AN, ANS, LL, LLL)
     # W = size of the information that N need to has
     # K = type os values a, an, n, ansb, b
-    BITS_VALUE_TYPE[  0] = ['','','','','']
+    BITS_VALUE_TYPE[  0] = [''   ,''                                           ,''   ,'' ,''   ]
     BITS_VALUE_TYPE[  1] = ['BME','Bit map '                                   ,'B'  ,16 ,'b'  ]
     BITS_VALUE_TYPE[  2] = ['2'  ,'Primary account number (PAN)'               ,'LL' ,19 ,'n'  ]
     BITS_VALUE_TYPE[  3] = ['3'  ,'Processing code'                            ,'N'  ,6  ,'n'  ]
     BITS_VALUE_TYPE[  4] = ['4'  ,'Amount, transaction'                        ,'N'  ,12 ,'n'  ]
     BITS_VALUE_TYPE[  5] = ['5'  ,'Amount, settlement'                         ,'N'  ,12 ,'n'  ]
     BITS_VALUE_TYPE[  6] = ['6'  ,'Amount, cardholder billing'                 ,'N'  ,12 ,'n'  ]
-    BITS_VALUE_TYPE[  7] = ['7'  ,'Transmission date & time'                   ,'N'  ,10 ,'n'  ]
+    BITS_VALUE_TYPE[  7] = ['7'  ,'Transmission date & time (MMDDhhmmss)'      ,'N'  ,10 ,'n'  ]
     BITS_VALUE_TYPE[  8] = ['8'  ,'Amount, cardholder billing fee'             ,'N'  ,8  ,'n'  ]
     BITS_VALUE_TYPE[  9] = ['9'  ,'Conversion rate, settlement'                ,'N'  ,8  ,'n'  ]
     BITS_VALUE_TYPE[ 10] = ['10' ,'Conversion rate, cardholder billing'        ,'N'  ,8  ,'n'  ]
