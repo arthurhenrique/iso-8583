@@ -1,5 +1,9 @@
+# encoding: utf-8
 def print_iso(str_obs, value):
     print("{}\n\t{}".format(str_obs,value))
+
+def print_json(str_obs, value):
+    print("\t{{ \'{}\':{} }}".format(str_obs,value))
 
 def get_hex(obj):
     #in case of list
@@ -15,8 +19,8 @@ def get_hex(obj):
 def debug_bitmap(value):
     str = ""
     str = str + "0________10________20________30________40________50________60__64\n"
-    str = str + "\t1234567890123456789012345678901234567890123456789012345678901234  n-th bit\n"
-    str = str + "\t{:064b}".format(value)
+    str = str + "1234567890123456789012345678901234567890123456789012345678901234  n-th bit\n"
+    str = str + "{:064b}".format(value)
     return str
     
 def bits_to_bitmap(list_bitmap = []):
