@@ -15,8 +15,4 @@ if __name__ == '__main__':
     print_iso("<Bitmap>"                , parse.get_bitmap())
     print_iso("<Bits Active>"           , BitmapIso.get_bitmap(parse.bitmap))
     
-    list_de = parse.get_data_element()
-    
-    print("<Data Elements>")
-    for count in range(0, len(list_de)):
-        print("\t<Data Element {:03d}> [{}] -> {}\t".format(list_de[count][0],list_de[count][1], DataElementIso.BITS_VALUE_TYPE[list_de[count][0]][1]))
+    parse.get_data_element()

@@ -1,5 +1,7 @@
 # encoding: utf-8
 import struct
+
+from parser_tlv import *
 from utils import *
 
 class MtiIso:
@@ -203,16 +205,24 @@ class DataElementIso:
         else:
             return  self.BITS_VALUE_TYPE[bit][3]
 
-    def parse_data_element(self):
+    def parse_data_element(self, bit55):
         ini    = 0
         end    = 0
         length = 0
         bits_active = BitmapIso.get_bitmap(self.list_bitmap)
         list_bit_value = []
+
+        print("<Data Elements>")
         for count in range(0,len(bits_active)):
             bit    = bits_active[count]
             ini    = ini + length
             length = self.get_length(ini,bit)
             end    = ini + length
-            list_bit_value.append([bit, self.data_element[ini:end]])
-        return list_bit_value
+            value  = self.data_element[ini:end]
+            
+            print("\t<Data Element {:03d}> [{}] -> {}\t".format(bit,value, DataElementIso.BITS_VALUE_TYPE[bit][1]))
+
+            if bit == 55 and bit55:
+                p = ParserTlv()
+                p.parse_tlv(value[3:])
+

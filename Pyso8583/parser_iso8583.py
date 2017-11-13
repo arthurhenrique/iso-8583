@@ -69,7 +69,6 @@ class ParserMessageIso:
         self.data_element = self.message_iso[ini:]
 
     # Get all the data element
-    def get_data_element(self):
-        ode     = DataElementIso(self.bitmap, self.data_element)
-        list_bit_value = ode.parse_data_element()
-        return list_bit_value
+    def get_data_element(self, bit55=True):
+        ode = DataElementIso(self.bitmap, self.data_element)
+        ode.parse_data_element(bit55)

@@ -1,42 +1,33 @@
-#class Tag:
 
+str_emv = "3129F2701809F3602018E9F2608B12C8EC8650ACC949F10050000000188950500800010009B02E8009F01060000000072259F41030000345F360102DF7A0101DF7B03000000DF7C0400000000DF68050000000000DF6104205AD928DF63080000000040200001DF6206000000060566DF6003005763DF7201009F080202059A031709069F21031202248104000271795F20064D4E493032379F45020000"
 
-#class Length:
+str_emv = str_emv[3:]
 
+ini = 0;
+end = 2
 
-#class Value:
+c = len(str_emv)
 
-BIT_5 = 5
-BIT_0 = 0
+while end < c :
+    #Tag
+    if has_another_byte(int(str_emv[ini:end], 16)):
+        end = end + 2
+    tag = str_emv[ini:end]
+    ini = end
+    end = end + 2
 
-s = "DF7A01019F360202f7DF61041F76AE73"
-s = "DF61041F76AE73"
+    #Length
+    len = int(str_emv[ini:end],16) * 2
+    ini = end
+    end = len + end
 
-def has_another_byte(tag_byte):
-    sum_bits = 0
-    for bit in range(BIT_0,BIT_5):
-        if tag_byte & 1 << bit:
-            sum_bits = sum_bits + 1 
-    # has another byte?
-    if sum_bits == 5:
-        return True
-    else:
-        return False
+    #Value
+    val = str_emv[ini:end]
+    ini = end
+    end = end + 2
 
-len_byte = 2
-tag_byte = int(s[:len_byte],16)
-if has_another_byte(tag_byte):
-    len_byte = 4
-    tag_byte = int(s[:len_byte],16)
-
-tag    = hex(tag_byte)
-ini = len_byte
-end = len_byte + 2
-length = int(s[ini:end],16)
-ini = end
-end = end + length * 2
-value  = str(s[ini:end])
-
-print(tag)
-print(length)
-print(value)
+    #Print
+    print("tag: "   , tag)
+    print("length: ", len)
+    print("value:"  , val)
+    print("----------------")
