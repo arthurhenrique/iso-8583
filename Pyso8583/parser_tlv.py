@@ -201,6 +201,4 @@ class ParserTlv():
             end = end + 2
             #Print TLV
             des = self.get_description_emv(tag)
-            print("\t\t<Tag: {:4}> [{}] -> {}".format(tag, val, des))
-
-    
+            print("\t\t<Tag: 0x{:04X}> [{}] -> {}".format(int(tag,16), val, des))
